@@ -104,9 +104,9 @@ Carro = db.define_table('carro',
 Manutencao = db.define_table('manutencao',
     Field('carro', 'reference carro',  widget = lambda field, value:
     SQLFORM.widgets.options.widget(field, value, _class='browser-default')),
-    Field('km', 'decimal(7,3)', widget = lambda field, value:
+    Field('km', 'string', widget = lambda field, value:
     SQLFORM.widgets.string.widget(field, value, _class='validate')),
-    Field('data_nf', 'date', widget = lambda field, value:
+    Field('data_nf', 'date', label="Nota fiscal",  widget = lambda field, value:
     SQLFORM.widgets.string.widget(field, value, _class='validate')),
     Field('valor', 'decimal(7,2)', widget = lambda field, value:
     SQLFORM.widgets.string.widget(field, value, _class='validate')),

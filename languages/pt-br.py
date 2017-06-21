@@ -247,6 +247,7 @@
 'not a phone number': 'not a phone number',
 'not authorized': 'não autorizado',
 'not in': 'not in',
+'Nota fiscal': 'Nota fiscal',
 'Número': 'Número',
 'Object or table name': 'Nome do objeto do da tabela',
 'Observacoes': 'Observacoes',

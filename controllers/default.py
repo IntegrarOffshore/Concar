@@ -119,13 +119,13 @@ def ver_carro():
         param = edit[2]
         url = 'editar_carro/' + param
         redirect(URL(url))
-    if 'view' in request.args:
-        db.carro.id.readable = False # or writable
-        view = request.args
-        response.flash = view
-        param = view[2]
-        url = 'ver_carro_atual/' + param
-        redirect(URL(url))
+    # if 'view' in request.args:
+    #     db.carro.id.readable = False # or writable
+    #     view = request.args
+    #     response.flash = view
+    #     param = view[2]
+    #     url = 'ver_carro_atual/' + param
+    #     redirect(URL(url))
     grid = SQLFORM.grid(Carro,
     fields=[db.carro.marca,
             db.carro.modelo,
@@ -140,6 +140,8 @@ def ver_carro_atual():
     db.carro.id.readable = False
     db.carro.marca.writable = False
     db.carro.modelo.writable = False
+    db.carro.placa.writable = False
+    db.carro.ano.writable = False
     form = SQLFORM(Carro, request.args(0, cast=int))
     if form.process().accepted:
         session.flash = 'Carro atualizado: %s' % form.vars.nome
@@ -153,7 +155,12 @@ def ver_carro_atual():
 
 
 def ver_manutencao():
-
+    # if 'edit' in request.args:
+    #     edit = request.args
+    #     response.flash = edit
+    #     param = edit[2]
+    #     url = 'editar_revisao/' + param
+    #     redirect(URL(url))
     grid = SQLFORM.grid(Manutencao, fields=[db.manutencao.carro,
                                             db.manutencao.km,
                                             db.manutencao.data_nf,
@@ -171,6 +178,20 @@ def editar_carro():
     if form.process().accepted:
         session.flash = 'Carro atualizado: %s' % form.vars.nome
         redirect(URL('ver_carro'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+def editar_revisao():
+    db.manutencao.id.readable = False
+    form = SQLFORM(Manutencao,request.args(0, cast=int))
+    db.manutencao.id.readable = False 
+    if form.process().accepted:
+        session.flash = 'Revisão atualizada'
+        redirect(URL('ver_manutencao'))
     elif form.errors:
         response.flash = 'Erros no formulário!'
     else:
