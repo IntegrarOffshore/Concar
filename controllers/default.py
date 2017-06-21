@@ -72,7 +72,7 @@ def call():
 
 # CREATE
 
-#@auth.requires_login()
+@auth.requires_login()
 def carro():
     form = SQLFORM(Carro)
     if form.process().accepted:
@@ -85,6 +85,7 @@ def carro():
             response.flash = 'Preencha o formulário'
     return dict(form=form)
 
+@auth.requires_login()
 def manutencao():
     form = SQLFORM(Manutencao)
     if form.process().accepted:
@@ -100,7 +101,7 @@ def manutencao():
 
 # READ
 
-#@auth.requires_login()
+@auth.requires_login()
 def ver_usuarios():
     grid = SQLFORM.grid(db.auth_user,
     create=False,
@@ -111,7 +112,7 @@ def ver_usuarios():
                        json=False))
     return dict(grid=grid)
 
-#auth.requires_login()
+@auth.requires_login()
 def ver_carro():
     if 'edit' in request.args:
         edit = request.args
@@ -136,6 +137,7 @@ def ver_carro():
                        csv=False, xml=False, json=False))
     return dict(grid=grid)
 
+@auth.requires_login()
 def ver_carro_atual():
     db.carro.id.readable = False
     db.carro.marca.writable = False
@@ -153,7 +155,7 @@ def ver_carro_atual():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
-
+@auth.requires_login()
 def ver_manutencao():
     # if 'edit' in request.args:
     #     edit = request.args
@@ -171,7 +173,7 @@ def ver_manutencao():
 
 # EDITAR
 
-
+@auth.requires_login()
 def editar_carro():
     db.carro.id.readable = False
     form = SQLFORM(Carro, request.args(0, cast=int))
@@ -185,10 +187,11 @@ def editar_carro():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
+@auth.requires_login()
 def editar_revisao():
     db.manutencao.id.readable = False
     form = SQLFORM(Manutencao,request.args(0, cast=int))
-    db.manutencao.id.readable = False 
+    db.manutencao.id.readable = False
     if form.process().accepted:
         session.flash = 'Revisão atualizada'
         redirect(URL('ver_manutencao'))
