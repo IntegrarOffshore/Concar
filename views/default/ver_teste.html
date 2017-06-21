@@ -1,0 +1,17 @@
+{{extend 'layout.html'}}
+
+<h1>Ver teste</h1>
+
+{{import sqlite3}}
+
+{{conn = sqlite3.connect('applications/Sigedo/databases/storage.sqlite')}}
+
+{{cursor = conn.cursor ()}}
+{{cursor.execute ("SELECT nome, es_situacao, curso, data_inicio FROM estagio, aluno WHERE estagio.aluno = 1;")}}
+				   
+{{res = cursor.fetchone ()}}
+
+<h6>Nome: {{=res[0]}}</h6>
+<h6>Situação {{=res[1]}}</h6>
+<h6>Curso: {{=res[2]}}</h6>
+<h6>Data de Inicio{{=res[3]}}</h6>

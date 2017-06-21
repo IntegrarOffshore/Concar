@@ -1,0 +1,67 @@
+{{extend 'layout.html'}}
+
+{{=form.custom.begin}}
+
+{{# -*- coding:utf-8 -*- }}
+
+<body class="grey lighten-3">
+<h5 class="header col s12 light">Cadastrar Veículo</h5>
+<br><br><br><br>
+<div class="container">
+	<div class="container">
+		<div class="card-panel hoverable"><br>
+		<div class="row">
+			<div class="container">
+				<div style="text-align: center;"><img class="responsive-img" src="/Concar/static/images/add_carro.svg" height="100px" width="100px"><br><br>
+		  </div>
+			<div class="row">
+				<div class="input-field col s12">
+					{{=form.custom.widget.marca}}
+				<label>Marca</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s6">
+					{{=form.custom.widget.modelo}}
+				<label>Modelo</label>
+				</div>
+				<div class="input-field col s6">
+					{{=form.custom.widget.placa}}
+				<label>Placa</label>
+				</div>
+			</div>
+
+
+		<div class="row">
+			<div class="input-field col s12">
+				<label>Ano do carro</label>
+				{{=form.custom.widget.ano}}
+			</div>
+		</div>
+
+	</div>
+		</div>
+		<br>
+			</div> 	<!-- Fim do card -->
+			<br>
+			<div class="right">
+				<button class="btn waves-effect waves-light" type="submit" name="action">Enviar
+					<i class="material-icons right">send</i>
+				</button>
+			</div>
+
+ 			</div>
+ 		</div>
+ 	<br>
+
+	</div>
+</div>
+</div>
+</div>
+ <br><br><br><br>
+</body>
+
+
+
+{{=form.custom.end}}

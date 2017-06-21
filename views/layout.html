@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+        <!-- Always force latest IE rendering engine
+            (even in intranet) & Chrome Frame
+            Remove this if you use the .htaccess -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+        <!--  Mobile Viewport Fix
+            j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+            device-width: Occupy full width of the screen in its current orientation
+            initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+            user-scalable = yes allows the user to zoom in -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{=response.title or request.application}}</title>
+        <!-- http://dev.w3.org/html5/markup/meta.name.html -->
+        <meta name="application-name" content="{{=request.application}}">
+        <!-- Speaking of Google, don't forget to set your site up:
+            http://google.com/webmasters -->
+        <meta name="google-site-verification" content="">
+        <!-- include stylesheets -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{{=URL('static','materialize/css/materialize.min.css')}}">
+        <link rel="stylesheet" href="{{=URL('static','css/web2py-materialize.css')}}">
+
+        <link rel="shortcut icon" href="{{=URL('static','images/faviconn.ico')}}" type="image/x-icon">
+        <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+        <!-- All JavaScript at the bottom, except for Modernizr which enables
+            HTML5 elements & feature detects -->
+        <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+        <!--[if lt IE 9]>
+        <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
+        <![endif]-->
+        <!-- Favicons -->
+    </head>
+    <body>
+        {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+        {{block head}}{{end}}
+        {{
+        # using sidebars need to know what sidebar you want to use
+        mc0 = 'col m12'
+        mc1 = 'col m9'
+        mc2 = 'col m6'
+        left_sidebar_enabled = globals().get('left_sidebar_enabled', False)
+        right_sidebar_enabled = globals().get('right_sidebar_enabled', False)
+        middle_column = {0: mc0, 1: mc1, 2: mc2}[
+        (left_sidebar_enabled and 1 or 0)+(right_sidebar_enabled and 1 or 0)]
+        }}
+        <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- Navbar ======================================= -->
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper">
+                    <ul>
+                        <li>{{=response.logo or ''}}</li>
+                    </ul>
+                    {{if response.menu:}}
+                    {{=MENU(response.menu, _class='hide-on-med-and-down', li_class='dropdown', ul_class='dropdown-content')}}
+                    {{pass}}
+                    {{='auth' in globals() and MENU(auth.navbar('Welcome',mode='asmenu'), _class='right', li_class='dropdown', ul_class='dropdown-content') or ''}}
+                </div>
+            </nav>
+        </div>
+                <div class="card-panel teal right flash alert alert-dismissible" style="position:fixed;">{{=response.flash or ''}}</div>
+        <!-- Masthead ===================================== -->
+        {{block header}}
+        {{end}}
+        <!-- Main ========================================= -->
+        <div class="row">
+            {{if left_sidebar_enabled:}}
+            <div class="col m3 left-sidebar">
+                {{block left_sidebar}}
+                <h3>Left Sidebar</h3>
+                <p></p>
+                {{end}}
+            </div>
+            {{pass}}
+            <div class="{{=middle_column}}">
+                {{block center}}
+                {{include}}
+                {{end}}
+            </div>
+            {{if right_sidebar_enabled:}}
+            <div class="col m3">
+                {{block right_sidebar}}
+                <h3>Right Sidebar</h3>
+                <p></p>
+                {{end}}
+            </div>
+            {{pass}}
+        </div>
+        {{block footer}} <!-- this is default footer -->
+        <footer class="page-footer footer" style="padding-top:0; margin-top:0;">
+            <div class="footer-copyright">
+                <div class="container">
+                    {{=T('Copyleft')}} © {{=request.now.year}}
+                    <a class="grey-text text-lighten-4 right" href="http://alzemand.github.io/"> {{=T('Alzemand')}}</a>
+                </div>
+            </div>
+        </footer>
+        {{end}}
+        <!-- The javascript =============================== -->
+        <script src="{{=URL('static','materialize/js/materialize.min.js')}}"></script>
+        <!--
+            <script src="{{=URL('static','js/web2py-bootstrap3.js')}}"></script>
+            -->
+        {{block page_js}}{{end page_js}}
+        {{if response.google_analytics_id:}}
+        <!-- Analytics ==================================== -->
+        <script src="{{=URL('static','js/analytics.min.js')}}"></script>
+        <script type="text/javascript">
+            analytics.initialize({
+            'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
+            });
+        </script>
+        {{pass}}
+        <!-- Share ============================y============ -->
+        <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            var uuid = function(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+
+            });};
+               $('li.dropdown').each(function(i,o){
+                  var _uuid = uuid();
+                  var x = $(o).find('ul.dropdown-content')[0];
+                  var y = $(o).find('a').first()[0];
+                  $(x).attr('id',_uuid);
+                  $(y).attr('data-activates',_uuid).dropdown({'hover':true,'belowOrigin':true});
+               });
+            });
+        </script>
+    </body>
+</html>
